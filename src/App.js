@@ -35,9 +35,9 @@ const App = () => {
     }
   }
   
-  const [date, setDate] = useState('');
+  const [date, setDate] = useState(0);
   const handleChange = (event) => {
-    console.log(event.target.value);
+    console.log(date);
     setDate(event.target.value);
     fetchHoliday(event.target.value);
   };
@@ -60,21 +60,23 @@ const App = () => {
 
   return (
     <Container maxWidth="sx">
-      <Typography variant="h3" align="center" style={{margin: "30px 0 0 0"}}>TODAY IS A HOLIDAY!</Typography>
-      <FormControl sx={{ m: 1, minWidth: 200 }} size="small">
-      <InputLabel id="demo-select-small">Date</InputLabel>
-      <Select
-        labelId="demo-select-small"
-        id="demo-select-small"
-        value={date}
-        label="Date"
-        onChange={handleChange}
-      >
-        <MenuItem value={0}>Today</MenuItem>
-        <MenuItem value={1}>Tomorrow</MenuItem>
-        <MenuItem value={2}>The day after tomorrow</MenuItem>
-      </Select>
-    </FormControl>
+      <Typography variant="h3" align="center" style={{margin: "40px 0"}}>TODAY IS A HOLIDAY!</Typography>
+      <Container align="center">
+        <FormControl sx={{ m: 1, minWidth: 200 }} size="small" align="center">
+          <InputLabel id="demo-select-small">Date</InputLabel>
+          <Select
+            labelId="demo-select-small"
+            id="demo-select-small"
+            value={date}
+            label="Date"
+            onChange={handleChange}
+          >
+            <MenuItem value={0}>Today</MenuItem>
+            <MenuItem value={1}>Tomorrow</MenuItem>
+            <MenuItem value={2}>The day after tomorrow</MenuItem>
+          </Select>
+        </FormControl>
+      </Container>
       <Calendar date={getToday()}/>
       {
         (holidayData.length) ?

@@ -10,7 +10,7 @@ export default function Calendar({date}) {
         // backgroundColor : "white",
         width: 1000,
         maxWidth : "90%",
-        margin: "40px auto",
+        margin: "20px auto",
         right: 0,
         left: 0,
         border: "10px solid black",
