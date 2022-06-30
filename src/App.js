@@ -5,32 +5,54 @@ import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
 import { CardActionArea } from '@mui/material';
 import { useState, useEffect } from 'react'
 import Calendar from './Calendar';
 import Country from './Country';
+import Holiday from './Holiday'
 import meme from './kim-kardashian-work.gif'
 
 const App = () => {
   function getToday() {
     return String(new Date()).split(' ', 4); // return [dow, month, dom, year]
   }
-  function getMonth() { // get month in numeric
-    let month = String(new Date().getMonth() + 1);
-    return (month.length === 1) ? 0 + month : month;
+  function getDate(dayFromToday) { // return YYYY-MM-DD
+    let date = new Date();
+    date.setDate(date.getDate() + dayFromToday);
+    if (date.getMonth()+1 < 10) {
+      if (date.getDate() < 10) {
+        return `${date.getFullYear()}-0${date.getMonth()+1}-0${date.getDate()}` }
+      else return `${date.getFullYear()}-0${date.getMonth()+1}-${date.getDate()}`
+    }
+    else {
+      if (date.getDate() < 10) {
+        return `${date.getFullYear()}-${date.getMonth()+1}-0${date.getDate()}` }
+      else return `${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}`
+    }
   }
-
+  
+  const [date, setDate] = useState('');
+  const handleChange = (event) => {
+    console.log(event.target.value);
+    setDate(event.target.value);
+    fetchHoliday(event.target.value);
+  };
+  
   // holiday API
   const [holidayData, setHolidayData] = useState([])
   var requestOptions = {
     method: 'GET',
     redirect: 'follow'
   };
-  const fetchHoliday = () => {
+  const fetchHoliday = (dayFromToday = 0) => {
     fetch("https://date.nager.at/api/v3/NextPublicHolidaysWorldwide", requestOptions)
     .then(response => response.text())
     .then(result => {
-      setHolidayData(JSON.parse(result).filter((holiday) => holiday.date === `${getToday()[3]}-${getMonth()}-${getToday()[2]}`))
+      setHolidayData(JSON.parse(result).filter((holiday) => holiday.date === getDate(dayFromToday)))
     })
     .catch(error => console.log('error', error))
   };
@@ -38,9 +60,24 @@ const App = () => {
 
   return (
     <Container maxWidth="sx">
-      <Typography variant="h3" align="center" style={{margin: "30px 0 0 0"}}>TODAY IS HOLIDAY!</Typography>
+      <Typography variant="h3" align="center" style={{margin: "30px 0 0 0"}}>TODAY IS A HOLIDAY!</Typography>
+      <FormControl sx={{ m: 1, minWidth: 200 }} size="small">
+      <InputLabel id="demo-select-small">Date</InputLabel>
+      <Select
+        labelId="demo-select-small"
+        id="demo-select-small"
+        value={date}
+        label="Date"
+        onChange={handleChange}
+      >
+        <MenuItem value={0}>Today</MenuItem>
+        <MenuItem value={1}>Tomorrow</MenuItem>
+        <MenuItem value={2}>The day after tomorrow</MenuItem>
+      </Select>
+    </FormControl>
       <Calendar date={getToday()}/>
-      { (holidayData.length) ?
+      {
+        (holidayData.length) ?
         <Container maxWidth="lg">
           <Grid container 
             spacing={5} 
