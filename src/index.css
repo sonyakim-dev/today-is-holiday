@@ -8,6 +8,7 @@ body {
   background-image: url(./background-image.jpeg);
   background-repeat: no-repeat;
   background-size: 120%;
+  background-attachment: local;
 }
 
 code {

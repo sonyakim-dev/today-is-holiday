@@ -38,9 +38,9 @@ const App = () => {
 
   return (
     <Container maxWidth="sx">
-      <Typography variant="h3">TODAY IS HOLIDAY!</Typography>
+      <Typography variant="h3" align="center" style={{margin: "30px 0 0 0"}}>TODAY IS HOLIDAY!</Typography>
       <Calendar date={getToday()}/>
-      { holidayData.length ?
+      { (holidayData.length) ?
         <Container maxWidth="lg">
           <Grid container 
             spacing={5} 
@@ -55,6 +55,7 @@ const App = () => {
                     xs={12}
                     md={4}
                     key={index}
+                    style={{ margin: "30px"}}
                   >
                     <Country
                       countryCode={holiday.countryCode}
@@ -67,7 +68,7 @@ const App = () => {
           </Grid>
         </Container>
         : <Container maxWidth="xs">
-            <p>SORRY, THERE'S NO HOLIDAY..</p>
+            <p style={{fontSize: "20px"}}>SORRY, THERE'S NO HOLIDAY..</p>
             <img src={meme} style={{width: 450}}></img>
           </Container>
       }

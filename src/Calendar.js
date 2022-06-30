@@ -7,19 +7,18 @@ export default function Calendar({date}) {
   return (
     <>
       <div style={{
-        backgroundColor : "grey",
-        // width: 1000,
-        // height: 180,
-        // margin: "auto",
-        // right: 0,
-        // left: 0,
-        // position: "relative",
-        // border : "10px solid black",
-
+        // backgroundColor : "white",
+        width: 1000,
+        maxWidth : "90%",
+        margin: "40px auto",
+        right: 0,
+        left: 0,
+        border: "10px solid black",
       }}>
-        <p align="center" style={{fontSize : 150,fontWeight : 600}}>
+        <Typography align="center"
+        style={{fontFamily: 'Manrope', fontSize: 150, fontWeight: 600, margin: "20px 50px"}}>
           {month} {dom} {year}
-        </p>
+        </Typography>
       </div>
     </>
   )
