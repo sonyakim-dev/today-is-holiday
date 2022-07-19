@@ -23,7 +23,7 @@ export default function Country(props) {
     .catch(error => console.log('error', error))
   };
 
-  useEffect(() => fetchCountry(props.countryCode), []);
+  useEffect(() => fetchCountry(props.countryCode), [countryData]);
   
   return countryData.length? (
     <>
