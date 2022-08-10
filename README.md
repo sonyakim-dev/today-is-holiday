@@ -28,5 +28,5 @@ REST Countries (https://restcountries.com/)
 
 ## Tools
 React (https://reactjs.org/)<br/>
-Material UI (https://mui.com/material-ui/getting-started/overview/)<br/>
+Material UI (https://mui.com/material-ui/)<br/>
 Postman (https://www.postman.com/)
