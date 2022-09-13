@@ -17,21 +17,23 @@ import Holiday from './Holiday'
 import meme from './kim-kardashian-work.gif'
 
 const App = () => {
-  function getToday() {
-    return String(new Date()).split(' ', 4); // return [dow, month, dom, year]
-  }
+  // function getToday() {
+  //   return String(new Date()).split(' ', 4); // return [dow, month, dom, year]
+  // }
   function getDate(dayFromToday) { // return YYYY-MM-DD
     let date = new Date();
     date.setDate(date.getDate() + dayFromToday);
     if (date.getMonth()+1 < 10) {
       if (date.getDate() < 10) {
         return `${date.getFullYear()}-0${date.getMonth()+1}-0${date.getDate()}` }
-      else return `${date.getFullYear()}-0${date.getMonth()+1}-${date.getDate()}`
+      else
+        return `${date.getFullYear()}-0${date.getMonth()+1}-${date.getDate()}`
     }
     else {
       if (date.getDate() < 10) {
         return `${date.getFullYear()}-${date.getMonth()+1}-0${date.getDate()}` }
-      else return `${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}`
+      else
+        return `${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}`
     }
   }
   
@@ -52,14 +54,15 @@ const App = () => {
     fetch("https://date.nager.at/api/v3/NextPublicHolidaysWorldwide", requestOptions)
     .then(response => response.text())
     .then(result => {
-      setHolidayData(JSON.parse(result).filter((holiday) => holiday.date === getDate(dayFromToday)))
+      setHolidayData(JSON.parse(result).filter((holiday) => holiday.date === getDate(dayFromToday)));
+      // console.log(holidayData)
     })
     .catch(error => console.log('error', error))
   };
   useEffect(() => fetchHoliday(), []);
 
   return (
-    <Container maxWidth="sx">
+    <Container maxWidth="sx" align="center">
       <Typography variant="h3" align="center" style={{margin: "40px 0"}}>TODAY IS A HOLIDAY!</Typography>
       <Container align="center">
         <FormControl sx={{ m: 1, minWidth: 200 }} size="small" align="center">
@@ -77,7 +80,8 @@ const App = () => {
           </Select>
         </FormControl>
       </Container>
-      <Calendar date={getToday()}/>
+      <Typography variant="p" align="center" style={{fontSize: 11}}>(UTC timezone)</Typography>
+      <Calendar date={getDate(date)}/>
       {
         (holidayData.length) ?
         <Container maxWidth="lg">
@@ -94,7 +98,7 @@ const App = () => {
                     xs={12}
                     md={4}
                     key={index}
-                    style={{ margin: "30px"}}
+                    style={{margin: "30px"}}
                   >
                     <Country
                       countryCode={holiday.countryCode}
@@ -106,7 +110,7 @@ const App = () => {
             }
           </Grid>
         </Container>
-        : <Container maxWidth="xs">
+        : <Container maxWidth="xs" style={{margin: "30px 0"}}>
             <p style={{fontSize: "20px"}}>SORRY, THERE'S NO HOLIDAY..</p>
             <img src={meme} style={{width: 450}}></img>
           </Container>
