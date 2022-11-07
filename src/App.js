@@ -1,69 +1,67 @@
-import * as React from 'react';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
-import Grid from '@mui/material/Grid';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
-import { CardActionArea } from '@mui/material';
-import { useState, useEffect } from 'react'
-import Calendar from './Calendar';
-import Country from './Country';
-import Holiday from './Holiday'
-import meme from './kim-kardashian-work.gif'
+import * as React from "react";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import CardMedia from "@mui/material/CardMedia";
+import { CardActionArea } from "@mui/material";
+import Typography from "@mui/material/Typography";
+import Container from "@mui/material/Container";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
+import { useState, useEffect } from "react";
+import Calendar from "./Calendar";
+import Holiday from "./Holiday";
 
-const App = () => {
+function App() {
   // function getToday() {
   //   return String(new Date()).split(' ', 4); // return [dow, month, dom, year]
   // }
-  function getDate(dayFromToday) { // return YYYY-MM-DD
+  function getDate(dayFromToday = 0) {
+    // add day from today and return "YYYY-MM-DD"
     let date = new Date();
-    date.setDate(date.getDate() + dayFromToday);
-    if (date.getMonth()+1 < 10) {
-      if (date.getDate() < 10) {
-        return `${date.getFullYear()}-0${date.getMonth()+1}-0${date.getDate()}` }
-      else
-        return `${date.getFullYear()}-0${date.getMonth()+1}-${date.getDate()}`
-    }
-    else {
-      if (date.getDate() < 10) {
-        return `${date.getFullYear()}-${date.getMonth()+1}-0${date.getDate()}` }
-      else
-        return `${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}`
-    }
+    date.setUTCDate(date.getUTCDate() + dayFromToday);
+    let month = (date.getUTCMonth() + 1 < 10) ? `0${date.getUTCMonth() + 1}` : `${date.getUTCMonth() + 1}`;
+    let day = (date.getUTCDate() < 10) ? `0${date.getUTCDate()}` : `${date.getUTCDate()}`;
+    return `${date.getUTCFullYear()}-${month}-${day}`;
   }
-  
-  const [date, setDate] = useState(0);
+
+  const [date, setDate] = useState(0); // 0: today, 1: tomorrow, 2: the day after tomorrow
   const handleChange = (event) => {
-    console.log(date);
+    // console.log(date);
     setDate(event.target.value);
     fetchHoliday(event.target.value);
   };
-  
+
   // holiday API
-  const [holidayData, setHolidayData] = useState([])
+  const [holidayData, setHolidayData] = useState([]);
   var requestOptions = {
-    method: 'GET',
-    redirect: 'follow'
+    method: "GET",
+    redirect: "follow",
   };
   const fetchHoliday = (dayFromToday = 0) => {
-    fetch("https://date.nager.at/api/v3/NextPublicHolidaysWorldwide", requestOptions)
-    .then(response => response.text())
-    .then(result => {
-      setHolidayData(JSON.parse(result).filter((holiday) => holiday.date === getDate(dayFromToday)));
-      // console.log(holidayData)
-    })
-    .catch(error => console.log('error', error))
+    fetch(
+      "https://date.nager.at/api/v3/NextPublicHolidaysWorldwide",
+      requestOptions
+    )
+      .then((response) => response.text())
+      .then((result) => {
+        setHolidayData(
+          JSON.parse(result).filter(
+            (holiday) => holiday.date === getDate(dayFromToday)
+          )
+        );
+        // console.log(holidayData)
+      })
+      .catch((error) => console.log("error", error));
   };
   useEffect(() => fetchHoliday(), []);
 
   return (
     <Container maxWidth="sx" align="center">
-      <Typography variant="h3" align="center" style={{margin: "40px 0"}}>TODAY IS A HOLIDAY!</Typography>
+      <Typography variant="h3" align="center" style={{ margin: "40px 0" }}>
+        TODAY IS A HOLIDAY!
+      </Typography>
       <Container align="center">
         <FormControl sx={{ m: 1, minWidth: 200 }} size="small" align="center">
           <InputLabel id="demo-select-small">Date</InputLabel>
@@ -80,43 +78,13 @@ const App = () => {
           </Select>
         </FormControl>
       </Container>
-      <Typography variant="p" align="center" style={{fontSize: 11}}>(UTC timezone)</Typography>
-      <Calendar date={getDate(date)}/>
-      {
-        (holidayData.length) ?
-        <Container maxWidth="lg">
-          <Grid container 
-            spacing={5} 
-            justifyContent="center"
-            alignItems="flex-start"
-          >
-            {
-              holidayData.map((holiday, index) => {
-                return (
-                  <Grid
-                    item
-                    xs={12}
-                    md={4}
-                    key={index}
-                    style={{margin: "30px"}}
-                  >
-                    <Country
-                      countryCode={holiday.countryCode}
-                      holidayName={holiday.name}
-                    />
-                  </Grid>
-                )
-              })
-            }
-          </Grid>
-        </Container>
-        : <Container maxWidth="xs" style={{margin: "30px 0"}}>
-            <p style={{fontSize: "20px"}}>SORRY, THERE'S NO HOLIDAY..</p>
-            <img src={meme} style={{width: 450}}></img>
-          </Container>
-      }
+      <Typography variant="p" align="center" style={{ fontSize: 12 }}>
+        (UTC timezone)
+      </Typography>
+      <Calendar date={getDate(date)} />
+      <Holiday holidayData={holidayData} />
     </Container>
   );
-};
+}
 
 export default App;
