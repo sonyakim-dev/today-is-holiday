@@ -36,7 +36,7 @@ function Holiday({ holidayData }) {
       ) : (
         <Container maxWidth="xs" style={{ margin: "30px 0" }}>
           <p style={{ fontSize: "20px" }}>SORRY, THERE'S NO HOLIDAY..</p>
-          <img src={meme} style={{ maxWidth: 450 }}></img>
+          <img src={meme} style={{ maxWidth: 450 }}/>
         </Container>
       )}
     </>

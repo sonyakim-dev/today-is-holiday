@@ -40,16 +40,11 @@ function App() {
     redirect: "follow",
   };
   const fetchHoliday = (dayFromToday = 0) => {
-    fetch(
-      "https://date.nager.at/api/v3/NextPublicHolidaysWorldwide",
-      requestOptions
-    )
+    fetch("https://date.nager.at/api/v3/NextPublicHolidaysWorldwide", requestOptions)
       .then((response) => response.text())
       .then((result) => {
         setHolidayData(
-          JSON.parse(result).filter(
-            (holiday) => holiday.date === getDate(dayFromToday)
-          )
+          JSON.parse(result).filter((holiday) => holiday.date === getDate(dayFromToday))
         );
         // console.log(holidayData)
       })
@@ -62,6 +57,7 @@ function App() {
       <Typography variant="h3" align="center" style={{ margin: "40px 0" }}>
         TODAY IS A HOLIDAY!
       </Typography>
+
       <Container align="center">
         <FormControl sx={{ m: 1, minWidth: 200 }} size="small" align="center">
           <InputLabel id="demo-select-small">Date</InputLabel>
@@ -78,10 +74,13 @@ function App() {
           </Select>
         </FormControl>
       </Container>
+
       <Typography variant="p" align="center" style={{ fontSize: 12 }}>
         (UTC timezone)
       </Typography>
+
       <Calendar date={getDate(date)} />
+      
       <Holiday holidayData={holidayData} />
     </Container>
   );
