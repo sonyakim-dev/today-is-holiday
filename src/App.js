@@ -20,10 +20,10 @@ function App() {
   function getDate(dayFromToday = 0) {
     // add day from today and return "YYYY-MM-DD"
     let date = new Date();
-    date.setUTCDate(date.getUTCDate() + dayFromToday);
-    let month = (date.getUTCMonth() + 1 < 10) ? `0${date.getUTCMonth() + 1}` : `${date.getUTCMonth() + 1}`;
-    let day = (date.getUTCDate() < 10) ? `0${date.getUTCDate()}` : `${date.getUTCDate()}`;
-    return `${date.getUTCFullYear()}-${month}-${day}`;
+    date.setDate(date.getDate() + dayFromToday);
+    let month = (date.getMonth() + 1 < 10) ? `0${date.getMonth() + 1}` : `${date.getMonth() + 1}`;
+    let day = (date.getDate() < 10) ? `0${date.getDate()}` : `${date.getDate()}`;
+    return `${date.getFullYear()}-${month}-${day}`;
   }
 
   const [date, setDate] = useState(0); // 0: today, 1: tomorrow, 2: the day after tomorrow
@@ -76,7 +76,7 @@ function App() {
       </Container>
 
       <Typography variant="p" align="center" style={{ fontSize: 12 }}>
-        (UTC timezone)
+        {Intl.DateTimeFormat().resolvedOptions().timeZone.replace("_", " ")}
       </Typography>
 
       <Calendar date={getDate(date)} />
